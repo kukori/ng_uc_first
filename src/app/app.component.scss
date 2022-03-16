@@ -1,0 +1,16 @@
+ul {
+    list-style: none;
+}
+
+.status {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background: red;
+    display: block;
+    margin: 4px 10px 0 0;
+    float: left;
+    &.checked-in {
+        background: green;
+    }
+}
