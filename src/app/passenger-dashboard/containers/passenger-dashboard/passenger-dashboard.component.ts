@@ -6,7 +6,7 @@ import { Passenger } from '../../models/Passenger';
   template: `
     <div>
       <app-passenger-count [items]="passengers"></app-passenger-count>
-      <app-passenger-details *ngFor="let passenger of passengers" [item]="passenger" ></app-passenger-details>
+      <app-passenger-details *ngFor="let passenger of passengers" [item]="passenger" (remove)="handleRemove($event)" (edit)="handleEdit($event)" ></app-passenger-details>
     </div>
   `,
   styleUrls: ['./passenger-dashboard.component.scss']
@@ -35,6 +35,13 @@ export class PassengerDashboardComponent implements OnInit {
     ]
   }
 
+  handleRemove(event: Passenger): void {
+    this.passengers = this.passengers.filter((passenger: Passenger) => passenger.id !== event.id)
+  }
+
+  handleEdit(event: Passenger): void {
+    this.passengers = this.passengers.map((passenger: Passenger) => passenger.id !== event.id ? {...passenger} : {...event})
+  }
 }
 
 
