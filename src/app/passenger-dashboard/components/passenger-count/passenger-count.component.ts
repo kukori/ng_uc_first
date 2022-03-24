@@ -6,7 +6,7 @@ import { Passenger } from '../../models/Passenger';
   template: `
     <div>
       <h3>Airline Passengers</h3>
-      <div>Total Checked In: {{ checkedInCount() }}/{{ items.length }}</div>
+      <div>Total Checked In: {{ checkedInCount() }}/{{ items?.length }}</div>
     </div>
   `,
   styleUrls: ['./passenger-count.component.scss']

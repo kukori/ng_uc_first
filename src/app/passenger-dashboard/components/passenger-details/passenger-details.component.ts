@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Passenger } from '../../models/Passenger';
 
 @Component({
@@ -24,7 +24,7 @@ import { Passenger } from '../../models/Passenger';
   `,
   styleUrls: ['./passenger-details.component.scss']
 })
-export class PassengerDetailsComponent implements OnInit {
+export class PassengerDetailsComponent implements OnInit, OnChanges {
   @Input() item!: Passenger;
   @Output() remove: EventEmitter<Passenger> = new EventEmitter();
   @Output() edit: EventEmitter<Passenger> = new EventEmitter();
@@ -32,7 +32,13 @@ export class PassengerDetailsComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: any): void {
+    // this is to change the binding between the item and the passengers array in the passenger-dashboard. The parent is updated bc it's the same object
+    if(changes.item) {
+      this.item = Object.assign({}, changes.item.currentValue);
+    }
   }
   
   toggleEdit(): void {

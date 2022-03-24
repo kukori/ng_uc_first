@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Passenger } from '../../models/Passenger';
+import { PassengerDashboardService } from '../../services/passenger-dashboard.service';
 
 @Component({
   selector: 'app-passenger-dashboard',
@@ -14,25 +15,10 @@ import { Passenger } from '../../models/Passenger';
 export class PassengerDashboardComponent implements OnInit {
   passengers: Passenger[] = [];
 
-  constructor() {}
+  constructor(private passengerService: PassengerDashboardService) {}
 
   ngOnInit(): void {
-    this.passengers = [
-      {
-        id: 1,
-        fullname: 'Steven',
-        checkedIn: false,
-        checkInDate: null,
-        children: [{ name: 'Ted', age: 12 }, { name: 'Chloe', age: 10 }]
-      },
-      {
-        id: 2,
-        fullname: 'Jane',
-        checkedIn: true,
-        checkInDate: 1490742000000,
-        children: null,
-      },
-    ]
+    this.passengerService.getPassengers().subscribe((data: Passenger[]) => this.passengers = data);
   }
 
   handleRemove(event: Passenger): void {
