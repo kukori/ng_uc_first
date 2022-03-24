@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Passenger } from '../../models/Passenger';
 import { PassengerDashboardService } from '../../services/passenger-dashboard.service';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-passenger-dashboard',
@@ -18,7 +20,12 @@ export class PassengerDashboardComponent implements OnInit {
   constructor(private passengerService: PassengerDashboardService) {}
 
   ngOnInit(): void {
-    this.passengerService.getPassengers().subscribe((data: Passenger[]) => this.passengers = data);
+    this.passengerService.getPassengers().pipe(
+      catchError(error => { 
+        console.log(error); 
+        return of([]);
+      })
+    ).subscribe((data: Passenger[]) => this.passengers = data);
   }
 
   handleRemove(event: Passenger): void {
