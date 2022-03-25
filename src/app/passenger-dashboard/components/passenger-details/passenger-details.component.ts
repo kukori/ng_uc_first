@@ -16,9 +16,6 @@ import { Passenger } from '../../models/Passenger';
     <div class="date">
       Check in date: {{ item.checkInDate ? (item.checkInDate | date: 'y.MMMM.d' | uppercase) : 'Passenger has not checked in' }}
     </div>
-    <div>
-      Children: {{ item.children?.length || 0 }}
-    </div>
     <button (click)="toggleEdit()">{{ editing ? 'Done' : 'Edit' }}</button>
     <button (click)="onRemove()">Remove</button>
   `,

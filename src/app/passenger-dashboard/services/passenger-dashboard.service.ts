@@ -21,6 +21,11 @@ export class PassengerDashboardService {
     return this.httpClient.get<Passenger[]>(this.apiUrl);
   }
 
+  getPassenger(id: number): Observable<Passenger> {
+    const url = `${this.apiUrl}/${id}`
+    return this.httpClient.get<Passenger>(url);
+  }
+
   updatePassenger(passenger: Passenger): Observable<Passenger> {
     const url = `${this.apiUrl}/${passenger.id}`
     return this.httpClient.put<Passenger>(url, passenger, httpOptions);
