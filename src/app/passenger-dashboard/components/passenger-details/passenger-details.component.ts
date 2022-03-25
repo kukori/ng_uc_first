@@ -18,16 +18,18 @@ import { Passenger } from '../../models/Passenger';
     </div>
     <button (click)="toggleEdit()">{{ editing ? 'Done' : 'Edit' }}</button>
     <button (click)="onRemove()">Remove</button>
+    <button (click)="goToPassengerDetails()">View passenger</button>
   `,
   styleUrls: ['./passenger-details.component.scss']
 })
 export class PassengerDetailsComponent implements OnInit, OnChanges {
   @Input() item!: Passenger;
-  @Output() remove: EventEmitter<Passenger> = new EventEmitter();
-  @Output() edit: EventEmitter<Passenger> = new EventEmitter();
+  @Output() remove: EventEmitter<Passenger> = new EventEmitter<Passenger>();
+  @Output() edit: EventEmitter<Passenger> = new EventEmitter<Passenger>();
+  @Output() view: EventEmitter<Passenger> = new EventEmitter<Passenger>();
   editing: boolean = false;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {}
 
@@ -48,7 +50,12 @@ export class PassengerDetailsComponent implements OnInit, OnChanges {
   onNameChange(name: string): void {
     this.item.fullname = name;
   }
+
   onRemove(): void {
     this.remove.emit(this.item);
+  }
+
+  goToPassengerDetails(): void {
+    this.view.emit(this.item)
   }
 }

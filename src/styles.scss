@@ -8,3 +8,17 @@ body {
     // background-size: cover;
     // /* background by SVGBackgrounds.com */
 }
+
+button {
+    background: #b690f1;
+    color: #fff;
+    font-size: 20px;
+    padding: 4px 10px;
+    margin: 0 2px;
+    border-radius: 4px;
+    border: none;
+    &:hover {
+        color: #fff;
+        background: #363c48;
+    }
+}

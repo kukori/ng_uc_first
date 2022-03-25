@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Passenger } from '../../models/Passenger';
 import { PassengerDashboardService } from '../../services/passenger-dashboard.service';
 import { catchError } from 'rxjs/operators';
@@ -9,7 +10,7 @@ import { of } from 'rxjs';
   template: `
     <div>
       <app-passenger-count [items]="passengers"></app-passenger-count>
-      <app-passenger-details *ngFor="let passenger of passengers" [item]="passenger" (remove)="handleRemove($event)" (edit)="handleEdit($event)" ></app-passenger-details>
+      <app-passenger-details *ngFor="let passenger of passengers" [item]="passenger" (remove)="handleRemove($event)" (edit)="handleEdit($event)" (view)="handleView($event)" ></app-passenger-details>
     </div>
   `,
   styleUrls: ['./passenger-dashboard.component.scss']
@@ -17,7 +18,7 @@ import { of } from 'rxjs';
 export class PassengerDashboardComponent implements OnInit {
   passengers: Passenger[] = [];
 
-  constructor(private passengerService: PassengerDashboardService) {}
+  constructor(private passengerService: PassengerDashboardService, private router: Router) {}
 
   ngOnInit(): void {
     this.passengerService.getPassengers().pipe(
@@ -38,6 +39,10 @@ export class PassengerDashboardComponent implements OnInit {
     this.passengerService.updatePassenger(event).subscribe((data: Passenger)=> {
       this.passengers = this.passengers.map((passenger: Passenger) => passenger.id !== data.id ? {...passenger} : {...data})
     });
+  }
+
+  handleView(event: Passenger): void {
+    this.router.navigate(['/passengers', event.id]);
   }
 }
 

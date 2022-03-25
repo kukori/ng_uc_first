@@ -13,7 +13,13 @@ import { PassengerViewerComponent } from './containers/passenger-viewer/passenge
 import { PassengerFormComponent } from './components/passenger-form/passenger-form.component';
 
 const routes: Routes = [
-  { path: 'passengers', component: PassengerDashboardComponent, pathMatch: 'full'},
+  { 
+    path: 'passengers', 
+    children: [
+      { path: '', component: PassengerDashboardComponent },
+      { path: ':id', component: PassengerViewerComponent }
+    ]
+  },
 ];
 
 @NgModule({
