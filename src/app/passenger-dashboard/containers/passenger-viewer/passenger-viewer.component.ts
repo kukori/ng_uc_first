@@ -6,7 +6,7 @@ import { Passenger } from '../../models/Passenger';
   selector: 'app-passenger-viewer',
   template: `
     <div>
-      <app-passenger-form [detail]="passenger"></app-passenger-form>
+      <app-passenger-form [detail]="passenger" (update)="onUpdatePassenger($event)"></app-passenger-form>
     </div>
   `,
   styleUrls: ['./passenger-viewer.component.scss']
@@ -18,5 +18,11 @@ export class PassengerViewerComponent implements OnInit {
 
   ngOnInit(): void {
     this.passengerService.getPassenger(1).subscribe((data: Passenger) => this.passenger = data);
+  }
+
+  onUpdatePassenger(passenger: Passenger): void {
+    this.passengerService.updatePassenger(passenger).subscribe((data: Passenger)=> {
+      this.passenger = {...data}
+    });
   }
 }

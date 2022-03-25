@@ -1,19 +1,45 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Passenger } from '../../models/Passenger';
 import { Baggage } from '../../models/Baggage';
 
 @Component({
   selector: 'app-passenger-form',
   template: `
-    <form #form="ngForm" novalidate>
-      {{ detail | json }}
+    <form (ngSubmit)="handleSubmit(form.value, form.valid)" #form="ngForm" novalidate>
+      <div>{{ detail | json }}</div>
       <div>
         Passenger name:
-        <input type="text" name="fullname" [ngModel]="detail?.fullname">
+        <input 
+          type="text" 
+          name="fullname"
+          required=""
+          #fullname="ngModel"
+          [ngModel]="detail?.fullname"
+        >
+        <div *ngIf="fullname.errors?.['required'] && fullname.dirty" class="error">
+          Passenger name is required
+        </div>
+        {{fullname.errors | json}}
       </div>
       <div>
         Passenger ID:
-        <input type="number" name="id" [ngModel]="detail?.id">
+        <!-- using the template reference #id="ngModel" we are getting access of what ngModel is doing => errors... -->
+        <input 
+          type="number" 
+          name="id"
+          required
+          min="0" 
+          max="100"
+          #id="ngModel"
+          [ngModel]="detail?.id"
+        >
+        <div *ngIf="id.errors?.['required'] && id.dirty" class="error">
+          Passenger id is required
+        </div>
+        <div *ngIf="id.errors?.['min'] && id.dirty" class="error">
+          Passenger id can't be less than 0
+        </div>
+        {{id.errors | json}}
       </div>
       <div>
         <!-- <label>
@@ -64,8 +90,13 @@ import { Baggage } from '../../models/Baggage';
       <div *ngIf="form.value.checkedIn">
         <input type="number" name="checkInDate" [ngModel]="detail?.checkInDate" hidden >
       </div>
+      <div>{{ form.value | json }}</div>
+      <div>Invalid:{{ form.invalid | json }}</div>
+      <div>Valid:{{ form.valid | json }}</div>
 
-      {{ form.value | json }}
+      <button type="submit" [disabled]="form.invalid">
+        Update Passenger
+      </button>
     </form>
   `,
   styleUrls: ['./passenger-form.component.scss']
@@ -79,6 +110,7 @@ export class PassengerFormComponent implements OnInit {
     { key: 'hold only', value: 'Hold baggage' },
     { key: 'both', value: 'Hand and hold baggage' },
   ];
+  @Output() update: EventEmitter<Passenger> = new EventEmitter<Passenger>();
 
   constructor() { }
 
@@ -91,4 +123,11 @@ export class PassengerFormComponent implements OnInit {
       this.detail.checkInDate = null;
     }
   }
+
+  handleSubmit(passenger: Passenger, isValid: boolean | null): void {
+    if(isValid) {
+      this.update.emit(passenger);
+    }
+  }
+
 }
